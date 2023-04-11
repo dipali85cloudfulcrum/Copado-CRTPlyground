@@ -12,6 +12,13 @@ Create Account Growmore
     ${CurrentTimeStamp}    Get Current Date
     ${UniqueName}=         UniqueAccountName           ${AccountName}         ${CurrentTimeStamp}
     TypeText               Account Name                ${UniqueName}
+    TypeText               Account Name                ${UniqueName}
+    LaunchApp              Sales
+    ClickText              Accounts
+    ClickText              New
+    UseModal               On
+    Sleep                  1 Sec
+    TypeText               Account Name                Growmore
     PickList               Type                        Competitor
     ClickText              Website
     TypeText               Website                     www.growmore.org
