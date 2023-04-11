@@ -18,7 +18,7 @@ Create Account Growmore
     ClickText              New
     UseModal               On
     Sleep                  1 Sec
-    TypeText               Account Name                ${UniqueName}=
+    TypeText               Account Name                ${UniqueName}
     PickList               Type                        Competitor
     ClickText              Website
     TypeText               Website                     www.growmore.org
