@@ -1,0 +1,32 @@
+*** Settings ***
+Resource                   ../Resources/common.robot
+Suite Setup                Setup Browser
+Suite Teardown             End suite
+
+
+*** Test Cases ***
+Create Account Growmore
+    [Tags]                 Account                     New Account
+    Appstate               Home
+    ${AccountName}=        Set Variable                Growmore
+    ${CurrentTimeStamp}    Get Current Date
+    ${UniqueName}=         UniqueAccountName           ${AccountName}         ${CurrentTimeStamp}
+    TypeText               Account Name                ${UniqueName}
+    PickList               Type                        Competitor
+    ClickText              Website
+    TypeText               Website                     www.growmore.org
+    ClickText              Phone
+    TypeText               Phone                       1234567890
+    PickList               Industry                    Banking
+    ClickText              Employees
+    TypeText               Employees                   100
+    ClickText              Save                        partial_match=false
+    UseModal               Off
+
+    ClickText              Details                     anchor=Related
+    VerifyText             ${UniqueName}
+    VerifyText             ${UniqueName}               anchor=Account Name
+    VerifyText             (123) 456-7890
+    VerifyField            Employees                   100
+    VerifyField            Website                     www.growmore.org
+    VerifyField            Industry                    Banking
