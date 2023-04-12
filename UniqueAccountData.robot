@@ -10,8 +10,7 @@ Create Account Growmore
     Appstate               Home
     ${AccountName}=        Set Variable                Growmore
     ${CurrentTimeStamp}    Get Current Date
-    ${UniqueName}=         UniqueAccountName           ${AccountName}         ${CurrentTimeStamp}
-    TypeText               Account Name                ${UniqueName}
+    ${UniqueName}         UniqueAccountName           ${AccountName}         ${CurrentTimeStamp}
     TypeText               Account Name                ${UniqueName}
     LaunchApp              Sales
     ClickText              Accounts
