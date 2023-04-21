@@ -1,3 +1,6 @@
+#How to fetch the data from MSSQL/SQL/ANY database?
+#Whether CRT is able to connect with SQL/MSSQL/any database to retrieve the data? In order to proceed the test execution with the fetched values?
+
 *** Settings ***
 Documentation      Sample MySQL tests.
 Library            DatabaseLibrary
