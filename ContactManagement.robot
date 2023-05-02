@@ -1,43 +1,105 @@
 *** Settings ***
-Library                   QWeb
-Library                   QForce
-Library                   String
+Resource           ../Resources/common.robot
+#Library            DataDriver                  reader_class=TestDataApi    name=Leads.csv    #iterates through the Leads csv
+Suite Setup        Setup Browser
+Suite Teardown     End suite
+Test Template      Entering A Contact With Data
 
 
-*** Variables ***
-${username}               YOUR USERNAME HERE
-${login_url}              https://YOURDOMAIN.my.salesforce.com          # Salesforce instance. NOTE: Should be overwritten in CRT variables
-${home_url}               ${login_url}/lightning/page/home
+*** Test Cases ***
+Creating A Contact
+    [tags]         Contact                     Git Repo Exercise
+    Appstate       Home
+    LaunchApp      Sales
 
+    ClickText      Contact
+    VerifyText     Recently Viewed             timeout=120s
+    ClickText      New                         anchor=Import
+    VerifyText     Contact Information
+    UseModal       On                          # Only find fields from open modal dialog
 
-*** Keywords ***
-Setup Browser
-    Set Library Search Order                          QWeb                   QForce
-    Open Browser          about:blank                 ${BROWSER}
-    SetConfig             LineBreak                   ${EMPTY}               #\ue000
-    SetConfig             DefaultTimeout              20s                    #sometimes salesforce is slow
+    Picklist       Salutation                  Ms.
+    TypeText       First Name                  Tina
+    TypeText       Last Name                   Smith
+    ComboBox       Search Accounts...          ROCL Acc1 Updated
+    TypeText       Phone                       +12234567858449             First Name
+    ClickText      Save                        partial_match=False
+    UseModal       Off
+    Sleep          2
 
+    ClickText      Details                     anchor=Chatter
+    VerifyText     Ms. Tina Smith
+    VerifyField    Phone                       +12234567858449
 
-End suite
-    Set Library Search Order                          QWeb                   QForce
-    Close All Browsers
+    ClickText      Contacts
+    VerifyText     Tina Smith
+    VerifyText     ROCL Acc1 Updated
+    VerifyText     +12234567858449
 
+Udate Existing Contact
+    [tags]         Contact                     Git Repo Exercise
+    Appstate       Home
+    LaunchApp      Sales
 
-Login
-    [Documentation]       Login to Salesforce instance
-    Set Library Search Order                          QWeb                   QForce
-    GoTo                  ${login_url}
-    TypeText              Username                    ${username}             delay=1
-    TypeText              Password                    ${password}
-    ClickText             Log In
+    ClickText      Contact
+    VerifyText     Recently Viewed             timeout=120s
+    ClickText      Chandra N
 
+    ClickText      Details                     anchor=Chatter
+    ClickText      Edit Name
+    PickList       Salutation                  Ms.
+    TypeText       First Name                  Pooja
+    TypeText       Last Name                   K
+    ComboBox       Search Accounts...          Deepti choudhary
+    TypeText       Phone                       +12234567858449
+    ClickText      Save
+    ClickText      Details
 
-Home
-    [Documentation]       Navigate to homepage, login if needed
-    Set Library Search Order                          QWeb                   QForce
-    GoTo                  ${home_url}
-    ${login_status} =     IsText                      To access this page, you have to log in to Salesforce.    2
-    Run Keyword If        ${login_status}             Login
-    ClickText             Home
-    VerifyTitle           Home | Salesforce
-    
+    ClickText      Contacts
+    VerifyText     Pooja K
+    VerifyText     +12234567858449
+
+Delete the Contact Record
+    Appstate       Home
+    LaunchApp      Sales
+
+    ClickText      Contact
+    VerifyText     Recently Viewed             timeout=120s
+    ClickText      Crt1 Contact1
+    ClickText      Delete
+    ClickText      Delete
+    ClickText      Close
+
+Change Owner for the Contact
+    Appstate       Home
+    LaunchApp      Sales
+    ClickText      Contact
+    VerifyText     Recently Viewed             timeout=120s
+    ClickText      Rahul
+    ClickText      Details                     anchor=Related
+    ClickText      Show more actions
+    ClickText      Change Owner
+    UseModal       On
+    ComboBox       Search Users...             Navneeth Rokalla
+    ClickText      Submit
+    ClickText      Navneeth Rokalla
+
+Import Contact
+    [tags]         Contact                     SingleDataPoint
+    Appstate       Home
+    LaunchApp      Sales
+
+    ClickText      Contacts
+    VerifyText     Recently Viewed             timeout=120s
+    ClickText      New
+    VerifyText     Contact Information
+    UseModal       On                          # Only find fields from open modal dialog
+
+    TypeText       First Name                  ${First Name}
+    TypeText       Last Name                   ${Last Name}
+    ComboBox       Search Accounts...          ${Account Name}
+    TypeText       Phone                       ${Phone}                    First Name
+
+    ClickText      Save                        partial_match=False
+    UseModal       Off
+    Sleep          1
