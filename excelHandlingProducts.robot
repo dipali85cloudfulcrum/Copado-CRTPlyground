@@ -1,5 +1,5 @@
 *** Settings ***
-Resource                ../resources/common.resource
+Resource                ../Resources/excelHandlingCommon.robot
 Test Teardown           Close All Excel Documents
 Suite Setup             Setup Browser
 Suite Teardown          End Suite
