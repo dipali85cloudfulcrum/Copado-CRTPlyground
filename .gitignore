@@ -10,3 +10,6 @@ triggers/copado__*
 pages/copado__*
 
 permissionsets/copado__*
+output/
+.idea/
+debug.log
